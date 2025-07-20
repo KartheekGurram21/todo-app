@@ -15,9 +15,7 @@ const signupSchema = zod.object({
     .refine(val => /[a-z]/.test(val), { message: "Must include a lowercase letter" })
     .refine(val => /[A-Z]/.test(val), { message: "Must include an uppercase letter" })
     .refine(val => /[0-9]/.test(val), { message: "Must include a number" })
-    .refine(val => /[@#$]/.test(val), { message: "Must include a special character (@, #, $)" }),
-  firstName: zod.string().min(2).max(20),
-  lastName: zod.string().min(3).max(20)
+    .refine(val => /[@#$]/.test(val), { message: "Must include a special character (@, #, $)" })
 });
 
 const loginSchema = zod.object({
@@ -33,15 +31,14 @@ const loginSchema = zod.object({
 
 router.post('/signup', async (req, res) => {
     try {
-        const { email, password, firstName, lastName } = req.body;
+        const { email, password } = req.body;
         const requestObject = {
             email: email,
-            password: password,
-            firstName: firstName, 
-            lastName: lastName
+            password: password
         };
         const result = signupSchema.safeParse(requestObject);
         if(!result.success) {
+            console.log(result.error);
             return res.status(400).json({
                 data: result.error
             });
@@ -71,7 +68,7 @@ router.post('/login', async (req, res) => {
                 data: result.error
             });
         }
-        const user = User.findOne({
+        const user = await User.findOne({
             email: email
         });
         if(!user) {
@@ -106,17 +103,18 @@ router.get('/get-todos', userAuth, async (req, res) => {
         const todos = await Todo.find({ 
             userId: userId
         });
-        if(!todos) {
-            res.status(200).json({
-                data: {},
+        if(todos.length === 0) {
+            return res.status(200).json({
+                data: [],
                 message: "No results found"
             });
         } else {
-            res.status(200).json({
+            return res.status(200).json({
                 data: todos,
                 message: "Todos fetched successfully"
             });
         }
+
     } catch(err) {
         console.log(err);
     }

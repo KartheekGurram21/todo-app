@@ -8,14 +8,15 @@ const userSchema = new Schema({
         type: String,
         unique: true
     },
-    password: String,
-    firstName: String,
-    lastName: String
+    password: String
 });
 
 const todoSchema = new Schema({
-    userId: Schema.Types.ObjectId,
-    tite: String,
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    },
+    title: String,
     isDone: {
         type: Boolean,
         default: false
