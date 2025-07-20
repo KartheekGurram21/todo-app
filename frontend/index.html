@@ -8,6 +8,28 @@
 </head>
 <body>
     <!-- start writing code -->
+    <div class="container" id="signupView">
+    <h2>Signup</h2>
+    <label for="username">Username:</label>
+    <input type="text" id="username" value="sumana10@gmail.com" />
+    <label for="password">Password:</label>
+    <input type="password" id="password" value="password123" />
+    <button onclick="toggleView()">Signup</button>
+    <div class="link-text">
+        Already have an account? <a href="#" onclick="toggleView()">Sign In</a>
+    </div>
+    </div>
+
+    <div class="container hidden" id="todoView">
+    <h2>Your Todo List</h2>
+    <input type="text" placeholder="Add a new todo" />
+    <button>Add Todo</button>
+    <div class="todo-item"> <s>sleep</s> </div>
+    <div class="todo-item completed">hello kitty</div>
+    <div class="success">
+        Logged in successfully. <a href="#" onclick="toggleView()">Logout</a>
+    </div>
+    </div>
     <script src="./script.js"></script>    
 </body>
 </html>
